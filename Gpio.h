@@ -2,6 +2,7 @@
 #define GPIO_H
 
 #include "Memory_Map.h"
+#include "util.h"
 
 typedef enum
 {
