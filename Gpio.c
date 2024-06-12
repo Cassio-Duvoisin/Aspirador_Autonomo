@@ -1,6 +1,5 @@
 #include "Gpio.h"
-#include "Memory_Map.h"
-#include "util.h"
+
 
 void Gpio_ClkEnable(GPIO_PORT Port)
 {
