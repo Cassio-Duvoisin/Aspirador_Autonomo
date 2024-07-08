@@ -11,9 +11,7 @@
 #define RCC_AHB1ENR_GPIOAEN (1<<0) // Bit de habilitação do GPIO Port A
 
 #define GPIO_MODER_MODER12_0 (1<<24) // Configura o pino 12 do porto D como saída
-#define GPIO_MODER_MODER13_0 (1<<26) // Configura o pino 13 do porto D como saída
 #define GPIO_MODER_MODER14_0 (1<<28) // Configura o pino 14 do porto D como saída
-#define GPIO_MODER_MODER15_0 (1<<30) // Configura o pino 15 do porto D como saída
 
 #define GPIO_MODER_MODER0_INPUT (0<<0) // Configura o pino 0 do porto A como entrada
 
@@ -25,8 +23,8 @@ int main(void) {
     // Habilita o clock para o GPIO Port D e Port A
     RCC_AHB1ENR |= RCC_AHB1ENR_GPIODEN | RCC_AHB1ENR_GPIOAEN;
 
-    // Configura os pinos 12, 13, 14 e 15 do porto D como saída
-    GPIOD_MODER |= GPIO_MODER_MODER12_0 | GPIO_MODER_MODER13_0 | GPIO_MODER_MODER14_0 | GPIO_MODER_MODER15_0;
+    // Configura os pinos 12 e 14 do porto D como saída (LEDs verde e vermelho)
+    GPIOD_MODER |= GPIO_MODER_MODER12_0 | GPIO_MODER_MODER14_0;
 
     // Configura o pino 0 do porto A como entrada
     GPIOA_MODER &= ~GPIO_MODER_MODER0_INPUT;
@@ -54,17 +52,21 @@ int main(void) {
         // Atualiza o estado anterior do botão
         botao_pressionado_anterior = botao_pressionado;
 
-        if (leds_ligados) {
-            // Liga todos os LEDs
-            GPIOD_BSRR = (1 << 12) | (1 << 13) | (1 << 14) | (1 << 15);
+        // Se o botão estiver pressionado, pisca os LEDs
+        if (botao_pressionado) {
+            // Liga o LED verde (pino 12)
+            GPIOD_BSRR = (1 << 12);
+
+            // Liga o LED vermelho (pino 14)
+            GPIOD_BSRR = (1 << 14);
             delay(1000000); // Espera
 
             // Desliga todos os LEDs
-            GPIOD_BSRR = ((1 << 12) | (1 << 13) | (1 << 14) | (1 << 15)) << 16;
+            GPIOD_BSRR = ((1 << 12) | (1 << 14)) << 16;
             delay(1000000); // Espera
         } else {
-            // Desliga todos os LEDs (garantia de que estão desligados)
-            GPIOD_BSRR = ((1 << 12) | (1 << 13) | (1 << 14) | (1 << 15)) << 16;
+            // Se o botão não estiver pressionado, mantém os LEDs desligados
+            GPIOD_BSRR = ((1 << 12) | (1 << 14)) << 16;
         }
     }
 }
