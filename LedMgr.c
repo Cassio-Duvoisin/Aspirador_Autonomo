@@ -1,72 +1,26 @@
 #include "LedMgr.h"
-#include "util.h"
-#include "Memory_Map.h"
 
-void LedMgr_TurnLedOn(LED_TYPE Led)
+// Função para inicializar os LEDs
+void LED_Init(void)
 {
-	switch(Led.Color)
-	{
-		case LED_RED:
-			SET_BIT(GPIOD_BSRR, 1<<14);
-			Led.Status = LED_ON;
-			break;
-		
-		case LED_GREEN:
-			SET_BIT(GPIOD_BSRR, 1<<12);
-			Led.Status = LED_ON;
-			break;
-		
-		case LED_ORANGE:
-			SET_BIT(GPIOD_BSRR, 1<<13);
-			Led.Status = LED_ON;
-			break;
-		
-		case LED_BLUE:
-			SET_BIT(GPIOD_BSRR, 1<<15);
-			Led.Status = LED_ON;
-			break;
-		
-		default:
-			// do nothing
-			break;
-	}
-};
-	
-void LedMgr_TurnLEDoFF(LED_TYPE Led){
-	switch(Led.Color)
-	{
-		case LED_RED:
-			SET_BIT(GPIOD_BSRR,(1<<14)<<16);
-			Led.Status = LED_OFF;
-			break;
-		
-		case LED_GREEN:
-			SET_BIT(GPIOD_BSRR,(1<<12)<<16);
-			Led.Status = LED_OFF;
-			break;
-		
-		case LED_ORANGE:
-			SET_BIT(GPIOD_BSRR,(1<<13)<<16);
-			Led.Status = LED_OFF;
-			break;
-		
-		case LED_BLUE:
-			SET_BIT(GPIOD_BSRR,(1<<15)<<16);
-			Led.Status = LED_OFF;
-			break;
-		
-		default:
-			// do nothing
-			break;
-	}
-};
+    GPIO_InitTypeDef GPIO_InitStruct;
 
+    // Inicialização do Clock do Port D
+    __HAL_RCC_GPIOD_CLK_ENABLE();
 
-LED_TYPE LedMgr_ConfigLed(LED_COLOR_TYPE Color)
+    // Configuração dos pinos dos LEDs como saída
+    GPIO_InitStruct.Pin = LED_RED_PIN | LED_ORANGE_PIN | LED_BLUE_PIN | LED_GREEN_PIN;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+}
+
+// Função para controlar os LEDs
+void LED_On(GPIO_PinState state, GPIO_PinState state1, GPIO_PinState state2, GPIO_PinState state3)
 {
-	LED_TYPE Led;
-	Led.Color = Color;
-	Led.Status = LED_OFF;
-	
-	return Led;
-};
+    HAL_GPIO_WritePin(GPIOD, LED_RED_PIN, state);
+    HAL_GPIO_WritePin(GPIOD, LED_ORANGE_PIN, state1);
+    HAL_GPIO_WritePin(GPIOD, LED_BLUE_PIN, state2);
+    HAL_GPIO_WritePin(GPIOD, LED_GREEN_PIN, state3);
+}
