@@ -3,7 +3,9 @@
 Este projeto é um exemplo de utilização de um padrão de Proxy de Hardware para o microcontrolador STM32F407, utilizando a HAL (Hardware Abstraction Layer) do STM32CubeMX para abstrair o acesso aos periféricos.
 
 Organização dos Arquivos: Cada tipo de periférico (ADC, GPIO, PWM, LEDs) possui seu próprio par de arquivos .h e .c, facilitando a modularidade e a manutenção do código.
+
 Integração na main.c: A main.c inclui apenas o arquivo hardware_proxy.h, que por sua vez inclui todos os headers necessários para os periféricos específicos.
+
 Inicialização dos Periféricos: Cada periférico é inicializado usando suas respectivas funções de inicialização (Analog_Init, Digital_InitOutput, LED_Init, PWM_Init).
 
 ## Descrição
