@@ -1,29 +1,25 @@
 #ifndef LEDMGR_H
 #define LEDMGR_H
 
-typedef enum
-{
-	LED_RED=0,
-	LED_GREEN,
-	LED_BLUE,
-	LED_ORANGE
-} LED_COLOR_TYPE;
+#include "stm32f407xx.h"
 
-typedef enum
-{
-	LED_ON=0,
-	LED_OFF
-} LED_STATUS_TYPE;
+// Definições para LEDs
+#define LED_RED_PIN     GPIO_PIN_14
+#define LED_RED_PORT    GPIOD
+#define LED_ORANGE_PIN  GPIO_PIN_13
+#define LED_ORANGE_PORT GPIOD
+#define LED_BLUE_PIN    GPIO_PIN_15
+#define LED_BLUE_PORT   GPIOD
+#define LED_GREEN_PIN   GPIO_PIN_12
+#define LED_GREEN_PORT  GPIOD
 
-typedef struct
-{
-	LED_STATUS_TYPE Status;
-	LED_COLOR_TYPE Color;
-}LED_TYPE;
+// Funções públicas
 
-void LedMgr_TurnLedOn(LED_TYPE Led);
-void LedMgr_TurnLEDoFF(LED_TYPE Led);
-LED_TYPE LedMgr_ConfigLed(LED_COLOR_TYPE Color);
-	
+/**
+ * @brief Inicializa os LEDs.
+ */
+void LED_Init(void);
+
+void LED_On(GPIO_PinState state, GPIO_PinState state1, GPIO_PinState state2, GPIO_PinState state3);
 
 #endif /* LEDMGR_H */
