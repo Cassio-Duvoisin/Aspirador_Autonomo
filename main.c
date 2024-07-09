@@ -8,7 +8,7 @@ int main(void)
     PWM_TypeDef pwm;
 
     HAL_Init();  // Inicialização do HAL
-    SystemClock_Config();  // Configuração do clock do sistema
+    SystemConfig_Init();  // Configuração do clock do sistema
 
     // Inicialização do ADC
     Analog_Init(&analog);
