@@ -1,70 +1,57 @@
-#include <stdint.h>
+#include "Hardware_Proxy.h"
 
-// Definições de registradores e bits
-#define RCC_AHB1ENR (*((volatile uint32_t *)0x40023830)) // Endereço do registrador RCC_AHB1ENR
-#define GPIOD_MODER (*((volatile uint32_t *)0x40020C00)) // Endereço do registrador MODER do porto D
-#define GPIOD_BSRR (*((volatile uint32_t *)0x40020C18)) // Endereço do registrador BSRR do porto D
-#define GPIOA_MODER (*((volatile uint32_t *)0x40020000)) // Endereço do registrador MODER do porto A
-#define GPIOA_IDR   (*((volatile uint32_t *)0x40020010)) // Endereço do registrador IDR do porto A
+int main(void)
+{
+    // Variáveis para ADC, GPIO e PWM
+    Analog_TypeDef analog;
+    Digital_TypeDef digital;
+    PWM_TypeDef pwm;
 
-#define RCC_AHB1ENR_GPIODEN (1<<3) // Bit de habilitação do GPIO Port D
-#define RCC_AHB1ENR_GPIOAEN (1<<0) // Bit de habilitação do GPIO Port A
+    HAL_Init();  // Inicialização do HAL
+    SystemConfig_Init();  // Configuração do clock do sistema
 
-#define GPIO_MODER_MODER12_0 (1<<24) // Configura o pino 12 do porto D como saída
-#define GPIO_MODER_MODER13_0 (1<<26) // Configura o pino 13 do porto D como saída
-#define GPIO_MODER_MODER14_0 (1<<28) // Configura o pino 14 do porto D como saída
-#define GPIO_MODER_MODER15_0 (1<<30) // Configura o pino 15 do porto D como saída
+    // Inicialização do ADC
+    Analog_Init(&analog);
 
-#define GPIO_MODER_MODER0_INPUT (0<<0) // Configura o pino 0 do porto A como entrada
+    // Inicialização do pino digital como entrada
+    digital.port = GPIOA;  // Exemplo: Porta A
+    digital.pin = GPIO_PIN_0;  // Exemplo: Pino 0
+    Digital_InitInput(&digital);
 
-void delay(uint32_t time) {
-    for(uint32_t i=0; i<time; i++);
-}
+    // Inicialização do pino digital como saída
+    digital.port = GPIOB;  // Exemplo: Porta B
+    digital.pin = GPIO_PIN_5;  // Exemplo: Pino 5
+    Digital_InitOutput(&digital, GPIO_PIN_RESET);  // Estado inicial: Baixo
 
-int main(void) {
-    // Habilita o clock para o GPIO Port D e Port A
-    RCC_AHB1ENR |= RCC_AHB1ENR_GPIODEN | RCC_AHB1ENR_GPIOAEN;
+    // Inicialização dos LEDs
+    LED_Init();
 
-    // Configura os pinos 12, 13, 14 e 15 do porto D como saída
-    GPIOD_MODER |= GPIO_MODER_MODER12_0 | GPIO_MODER_MODER13_0 | GPIO_MODER_MODER14_0 | GPIO_MODER_MODER15_0;
+    // Inicialização do PWM
+    pwm.channel = TIM_CHANNEL_1;  // Canal 1 do TIM2
+    PWM_Init(&pwm, 1000);  // Frequência do PWM: 1000 Hz
 
-    // Configura o pino 0 do porto A como entrada
-    GPIOA_MODER &= ~GPIO_MODER_MODER0_INPUT;
+    while (1)
+    {
+        // Exemplo de leitura de pino digital
+        GPIO_PinState digital_state = Digital_Read(&digital);
 
-    // Pequeno delay para garantir a configuração dos pinos
-    delay(100000);
+        // Exemplo de escrita em pino digital
+        Digital_Write(&digital, GPIO_PIN_SET);  // Define o pino para Alto
 
-    // Variável para controlar o estado dos LEDs (ligado/desligado)
-    uint8_t leds_ligados = 0;
+        // Exemplo de leitura do ADC
+        uint16_t adc_value = Analog_Read(&analog, ADC_CHANNEL_0);
 
-    // Variável para armazenar o estado anterior do botão
-    uint8_t botao_pressionado_anterior = 0;
+        // Exemplo de controle dos LEDs
+        LED_On(GPIO_PIN_SET, GPIO_PIN_RESET, GPIO_PIN_SET, GPIO_PIN_RESET);  // Ativa LED Vermelho e Azul, Desativa LED Laranja e Verde
 
-    /* Loop infinito */
-    while(1) {
-        // Leitura do estado do botão (pino 0 do porto A)
-        uint8_t botao_pressionado = (GPIOA_IDR & 0x01);
-
-        // Verifica se o botão foi pressionado (bordo de subida)
-        if (botao_pressionado && !botao_pressionado_anterior) {
-            leds_ligados = !leds_ligados; // Alterna o estado dos LEDs
-            delay(100000); // Debounce delay para evitar múltiplas leituras rápidas
+        // Exemplo de controle do PWM (varia de 0% a 100% do ciclo de trabalho)
+        for (float duty = 0.1; duty <= 1.0; duty += 0.1) {
+            PWM_SetDutyCycle(&pwm, duty);
+            HAL_Delay(500);  // Delay de 500 ms
         }
 
-        // Atualiza o estado anterior do botão
-        botao_pressionado_anterior = botao_pressionado;
+        PWM_Stop(&pwm);  // Para o PWM
 
-        if (leds_ligados) {
-            // Liga todos os LEDs
-            GPIOD_BSRR = (1 << 12) | (1 << 13) | (1 << 14) | (1 << 15);
-            delay(1000000); // Espera
-
-            // Desliga todos os LEDs
-            GPIOD_BSRR = ((1 << 12) | (1 << 13) | (1 << 14) | (1 << 15)) << 16;
-            delay(1000000); // Espera
-        } else {
-            // Desliga todos os LEDs (garantia de que estão desligados)
-            GPIOD_BSRR = ((1 << 12) | (1 << 13) | (1 << 14) | (1 << 15)) << 16;
-        }
+        HAL_Delay(1000);  // Delay de 1 segundo
     }
 }
