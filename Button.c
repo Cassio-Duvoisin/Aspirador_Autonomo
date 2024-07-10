@@ -1,33 +1,20 @@
+/**
+ * @file button.c
+ * @brief Implementação das funções de leitura do botão.
+ */
+
 #include "button.h"
 
-/**
- * @brief Initializes the button GPIO pin.
- * 
- * This function initializes the GPIO pin connected to the onboard button.
- * It configures the pin as input with pull-up resistor enabled.
- */
 void Button_Init(void) {
-    GPIO_InitTypeDef GPIO_InitStruct;
+    __HAL_RCC_GPIOA_CLK_ENABLE();
 
-    // Enable the GPIO port clock
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-
-    // Configure button GPIO pin
-    GPIO_InitStruct.Pin = BUTTON_PIN;
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = GPIO_PIN_0;
     GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;  // Button is normally pull-up
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(BUTTON_GPIO_PORT, &GPIO_InitStruct);
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 
-/**
- * @brief Reads the current state of the button.
- * 
- * @return uint8_t The current state of the button (0 = not pressed, 1 = pressed).
- * 
- * This function reads the GPIO pin state to determine if the button is pressed or not.
- */
-uint8_t Button_ReadState(void) {
-    // Read the button GPIO pin state
-    return HAL_GPIO_ReadPin(BUTTON_GPIO_PORT, BUTTON_PIN);
+GPIO_PinState Button_Read(void) {
+    return HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
 }
