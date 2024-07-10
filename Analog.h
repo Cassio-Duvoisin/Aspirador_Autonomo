@@ -8,7 +8,7 @@ typedef struct {
     ADC_HandleTypeDef hadc;  // Estrutura do ADC
 } Analog_TypeDef;
 
-// Funções públicas
+//---------------------------Funções públicas---------------------------//
 
 /**
  * @brief Inicializa o ADC.
