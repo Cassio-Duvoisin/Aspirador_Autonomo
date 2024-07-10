@@ -1,5 +1,5 @@
 /**
- * @file hardwareproxy.h
+ * @file HardwareProxy.h
  * @brief Funções para abstração de hardware (Hardware Proxy Pattern).
  */
 
