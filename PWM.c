@@ -1,9 +1,9 @@
 /**
- * @file pwm.c
+ * @file PWM.c
  * @brief Implementação das funções de controle de PWM.
  */
 
-#include "pwm.h"
+#include "PWM.h"
 
 TIM_HandleTypeDef htim4;
 
