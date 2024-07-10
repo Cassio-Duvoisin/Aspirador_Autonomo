@@ -1,76 +1,66 @@
-#include "Hardware_Proxy.h"
+/**
+ * @file main.c
+ * @brief Função principal do programa.
+ */
 
-int main(void)
-{
-    // Variáveis para ADC, GPIO e PWM
-    Analog_TypeDef analog;
-    Digital_TypeDef digital_in;
-    Digital_TypeDef digital_out;
-    PWM_TypeDef pwm;
+#include "stm32f4xx_hal.h"
+#include "systemconfig.h"
+#include "hardwareproxy.h"
+#include "observer.h"
 
-    HAL_Init();  			                            // Inicialização do HAL
-    SystemConfig_Init();  	                            // Configuração do clock do sistema
+/**
+ * @brief Callback para notificação de 50% do PWM.
+ */
+void PWM_50PercentCallback(void);
 
-    // Inicialização do ADC
-    Analog_Init(&analog);
+int main(void) {
+    HAL_Init();  // Inicializa o HAL
+    SystemClock_Config();  // Configura o clock do sistema
+    HardwareProxy_Init();  // Inicializa todos os componentes de hardware
 
-    // Inicialização do pino digital como entrada
-    digital_in.port = GPIOA;  		                    // Exemplo: Porta A
-    digital_in.pin = GPIO_PIN_0;  	                    // Exemplo: Pino 0
-    Digital_InitInput(&digital_in);
+    RegisterObserver(PWM_50PercentCallback);  // Registra o callback para PWM
 
-    // Inicialização do pino digital como saída
-    digital_out.port = GPIOB;  		                    // Exemplo: Porta B
-    digital_out.pin = GPIO_PIN_5;  	                    // Exemplo: Pino 5
-    Digital_InitOutput(&digital_out, GPIO_PIN_RESET);   // Estado inicial: Baixo
+    uint32_t analogValue = 0;
+    GPIO_PinState digitalState;
+    uint32_t pwmValue = 0;  // Valor inicial do PWM
 
-    // Inicialização dos LEDs
-    LED_Init();
+    while (1) {
+        // Incrementa o valor do PWM a cada 1%
+        pwmValue = (pwmValue + 100) % 10000;  // Incrementa 1% e reinicia após 100%
+        HardwareProxy_SetPWM(pwmValue);  // Define o PWM
 
-    // Inicialização do PWM
-    pwm.channel = TIM_CHANNEL_1;                        // Canal 1 do TIM2
-    PWM_Init(&pwm, 1000);                               // Frequência do PWM: 1000 Hz
+        // Adiciona um pequeno delay
+        HAL_Delay(10);  // Delay de 10 ms
 
-    // Variável para armazenar o estado anterior do botão
-    GPIO_PinState button_state = GPIO_PIN_RESET;
+        // Leitura do valor analógico
+        analogValue = HardwareProxy_ReadAnalog();
+        // Leitura do estado do pino digital
+        digitalState = HardwareProxy_ReadDigital(GPIOD, GPIO_PIN_0);
 
-    while (1)
-    {
-        // Leitura do estado atual do botão
-        GPIO_PinState current_button_state = Digital_Read(&digital_in);
-
-        // Exemplo de controle dos LEDs
-        LED_On(GPIO_PIN_SET, GPIO_PIN_RESET, GPIO_PIN_SET, GPIO_PIN_RESET);  // Ativa LED Vermelho e Azul, Desativa LED Laranja e Verde
-
-        // Verifica se houve uma transição de estado (botão pressionado)
-        if (current_button_state == GPIO_PIN_SET && button_state == GPIO_PIN_RESET) {
-            // Inverte o estado dos LEDs
-            LED_Toggle(GPIO_PIN_0);
-            LED_Toggle(GPIO_PIN_1);
-            LED_Toggle(GPIO_PIN_2);
-            LED_Toggle(GPIO_PIN_3);
+        // Verifica se o botão foi pressionado para alternar o LED
+        if (HardwareProxy_ReadButton() == GPIO_PIN_SET) {
+            HardwareProxy_ToggleLED(GPIO_PIN_12);  // Alterna o estado do LED verde
         }
 
-        // Atualiza o estado anterior do botão
-        button_state = current_button_state;
-        
-        // Exemplo de leitura de pino digital
-        GPIO_PinState digital_state = Digital_Read(&digital_in);
-
-        // Exemplo de escrita em pino digital
-        Digital_Write(&digital_out, GPIO_PIN_SET);      // Define o pino para Alto
-
-        // Exemplo de leitura do ADC
-        uint16_t adc_value = Analog_Read(&analog, ADC_CHANNEL_0);
-
-        // Exemplo de controle do PWM (varia de 0% a 100% do ciclo de trabalho)
-        for (float duty = 0.1; duty <= 1.0; duty += 0.1) {
-            PWM_SetDutyCycle(&pwm, duty);
-            HAL_Delay(500);  // Delay de 500 ms
+        // Controla o estado dos LEDs azul e verde com base no estado do pino digital
+        if (digitalState == GPIO_PIN_SET) {
+            HardwareProxy_SetLED(GPIO_PIN_13, GPIO_PIN_SET);  // Liga o LED azul
+        } else {
+            HardwareProxy_SetLED(GPIO_PIN_13, GPIO_PIN_RESET);  // Desliga o LED azul
         }
 
-        PWM_Stop(&pwm);  // Para o PWM
-
-        HAL_Delay(1000);  // Delay de 1 segundo
+        // Notifica observadores se o PWM estiver em 50%
+        if (pwmValue >= 5000 && pwmValue < 5100) {
+            NotifyObservers();  // Notifica todos os observadores registrados
+        }
     }
+}
+
+/**
+ * @brief Callback para quando o PWM atinge 50%.
+ *
+ * Alterna o estado do LED vermelho.
+ */
+void PWM_50PercentCallback(void) {
+    HardwareProxy_ToggleLED(GPIO_PIN_14);  // Alterna o estado do LED vermelho
 }
