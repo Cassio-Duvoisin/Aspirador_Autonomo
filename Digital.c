@@ -1,9 +1,9 @@
 /**
- * @file digital.c
+ * @file Digital.c
  * @brief Implementação das funções de leitura e escrita de sinais digitais.
  */
 
-#include "digital.h"
+#include "Digital.h"
 
 void Digital_Init(void) {
     __HAL_RCC_GPIOD_CLK_ENABLE();
