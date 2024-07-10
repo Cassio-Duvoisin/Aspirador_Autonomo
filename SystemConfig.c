@@ -1,6 +1,6 @@
 #include "SystemConfig.h"
 
-// Fun��o para configurar o sistema
+// Funcao para configurar o sistema
 void SystemConfig_Init(void)
 {
     HAL_Init();  // Inicializacao do HAL
@@ -9,7 +9,7 @@ void SystemConfig_Init(void)
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
     RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-    // Configura��es do oscilador e PLL
+    // Configuracoes do oscilador e PLL
     RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
     RCC_OscInitStruct.HSEState = RCC_HSE_ON;
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
