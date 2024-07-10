@@ -1,48 +1,32 @@
-#include "PWM.h"
+/**
+ * @file pwm.c
+ * @brief Implementação das funções de controle de PWM.
+ */
 
-// Função para inicializar o PWM
-void PWM_Init(PWM_TypeDef *pwm, uint32_t frequency)
-{
-    // Configuração do timer para o PWM
-    TIM_MasterConfigTypeDef sMasterConfig;
-    TIM_OC_InitTypeDef sConfigOC;
+#include "pwm.h"
 
-    pwm->htim.Instance = TIM2;  // Exemplo: TIM2
-    pwm->htim.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() / 1000000) - 1;  // Prescaler para microsegundos
-    pwm->htim.Init.CounterMode = TIM_COUNTERMODE_UP;
-    pwm->htim.Init.Period = 1000000 / frequency - 1;  // Frequência desejada em Hz
-    pwm->htim.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-    HAL_TIM_PWM_Init(&(pwm->htim));
+TIM_HandleTypeDef htim4;
 
-    // Configuração do canal PWM
+void PWM_Init(void) {
+    __HAL_RCC_TIM4_CLK_ENABLE();
+
+    htim4.Instance = TIM4;
+    htim4.Init.Prescaler = 8399;
+    htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+    htim4.Init.Period = 9999;
+    htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    HAL_TIM_PWM_Init(&htim4);
+
+    TIM_OC_InitTypeDef sConfigOC = {0};
     sConfigOC.OCMode = TIM_OCMODE_PWM1;
-    sConfigOC.Pulse = 0;
+    sConfigOC.Pulse = 5000;
     sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
     sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-    HAL_TIM_PWM_ConfigChannel(&(pwm->htim), &sConfigOC, pwm->channel);
+    HAL_TIM_PWM_ConfigChannel(&htim4, &sConfigOC, TIM_CHANNEL_1);
 
-    sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-    sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-    HAL_TIMEx_MasterConfigSynchronization(&(pwm->htim), &sMasterConfig);
+    HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
 }
 
-// Função para ajustar o ciclo de trabalho do PWM (0.0 - 1.0)
-void PWM_SetDutyCycle(PWM_TypeDef *pwm, float duty_cycle)
-{
-    uint32_t pulse = (pwm->htim.Init.Period + 1) * duty_cycle;
-    HAL_TIM_PWM_Stop(&(pwm->htim), pwm->channel);
-    __HAL_TIM_SET_COMPARE(&(pwm->htim), pwm->channel, pulse);
-    HAL_TIM_PWM_Start(&(pwm->htim), pwm->channel);
-}
-
-// Função para iniciar o PWM
-void PWM_Start(PWM_TypeDef *pwm)
-{
-    HAL_TIM_PWM_Start(&(pwm->htim), pwm->channel);
-}
-
-// Função para parar o PWM
-void PWM_Stop(PWM_TypeDef *pwm)
-{
-    HAL_TIM_PWM_Stop(&(pwm->htim), pwm->channel);
+void PWM_SetDutyCycle(uint32_t dutyCycle) {
+    __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, dutyCycle);
 }
