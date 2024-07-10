@@ -4,9 +4,9 @@
  */
 
 #include "stm32f4xx_hal.h"
-#include "systemconfig.h"
-#include "hardwareproxy.h"
-#include "observer.h"
+#include "SystemConfig.h"
+#include "HardwareProxy.h"
+#include "Observer.h"
 
 /**
  * @brief Callback para notificação de 50% do PWM.
