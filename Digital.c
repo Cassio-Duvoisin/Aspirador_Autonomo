@@ -56,5 +56,5 @@ void Digital_EnableInterrupt(Digital_TypeDef *digital, void (*callback)(void))
     HAL_GPIO_Init(digital->port, &GPIO_InitStruct);
 
     // Associação da função de callback à interrupção
-    HAL_GPIO_RegisterCallback(&digital->port, HAL_GPIO_EXTI_Callback_IT, callback);
+    //HAL_GPIO_RegisterCallback(&digital->port, HAL_GPIO_EXTI_Callback_IT, callback);
 }

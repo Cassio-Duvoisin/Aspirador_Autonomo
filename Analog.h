@@ -1,14 +1,14 @@
 #ifndef ANALOG_H
 #define ANALOG_H
 
-#include "stm32f407xx.h"
+#include "stm32f4xx_hal.h"
 
 // Estrutura para encapsular o ADC
 typedef struct {
     ADC_HandleTypeDef hadc;  // Estrutura do ADC
 } Analog_TypeDef;
 
-// Funções públicas
+//---------------------------Funções públicas---------------------------//
 
 /**
  * @brief Inicializa o ADC.
@@ -25,7 +25,5 @@ void Analog_Init(Analog_TypeDef *analog);
  * @return Valor lido do canal especificado.
  */
 uint16_t Analog_Read(Analog_TypeDef *analog, uint32_t channel);
-
-//void DAC_Write(uint16_t value);  // Se necessário, implemente no main.c
 
 #endif /* ANALOG_H */

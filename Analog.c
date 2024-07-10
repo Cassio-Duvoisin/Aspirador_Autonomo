@@ -1,6 +1,6 @@
 #include "Analog.h"
 
-// Função para inicializar o ADC
+// Inicializa o DAC.
 void Analog_Init(Analog_TypeDef *analog)
 {
     // Configuração do ADC
@@ -16,7 +16,7 @@ void Analog_Init(Analog_TypeDef *analog)
     HAL_ADC_Init(&(analog->hadc));
 }
 
-// Função para ler um canal específico do ADC
+// Realiza a leitura de um canal específico do ADC.
 uint16_t Analog_Read(Analog_TypeDef *analog, uint32_t channel)
 {
     ADC_ChannelConfTypeDef sConfig;
