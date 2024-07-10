@@ -21,10 +21,20 @@
 void LED_Init(void);
 
 /**
- * @brief Seta o estado para os LEDs
+ * @brief Seta o estado para os LEDs.
  * 
- * @param GPIO_PinState estado desejado do LED
+ * @param led_red Estado do LED vermelho (GPIO_PIN_RESET ou GPIO_PIN_SET).
+ * @param led_orange Estado do LED laranja (GPIO_PIN_RESET ou GPIO_PIN_SET).
+ * @param led_blue Estado do LED azul (GPIO_PIN_RESET ou GPIO_PIN_SET).
+ * @param led_green Estado do LED verde (GPIO_PIN_RESET ou GPIO_PIN_SET).
  */
 void LED_On(GPIO_PinState led_red, GPIO_PinState led_orange, GPIO_PinState led_blue, GPIO_PinState led_green);
+
+/**
+ * @brief Alterna o estado dos LEDs (liga se estiver desligado, desliga se estiver ligado).
+ * 
+ * @param led_pin Pino do LED a ser alternado.
+ */
+void LED_Toggle(uint16_t led_pin);
 
 #endif /* LEDMGR_H */
