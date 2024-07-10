@@ -1,7 +1,7 @@
 #ifndef LEDMGR_H
 #define LEDMGR_H
 
-#include "stm32f407xx.h"
+#include "stm32f4xx_hal.h"
 
 // Definições para LEDs
 #define LED_RED_PIN     GPIO_PIN_14
