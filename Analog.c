@@ -1,9 +1,9 @@
 /**
- * @file analog.c
+ * @file Analog.c
  * @brief Implementação das funções de leitura de sinal analógico.
  */
 
-#include "analog.h"
+#include "Analog.h"
 
 ADC_HandleTypeDef hadc1;
 
