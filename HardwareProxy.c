@@ -1,9 +1,9 @@
 /**
- * @file hardwareproxy.c
+ * @file HardwareProxy.c
  * @brief Implementação das funções de abstração de hardware.
  */
 
-#include "hardwareproxy.h"
+#include "HardwareProxy.h"
 
 void HardwareProxy_Init(void) {
     Analog_Init();
