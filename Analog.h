@@ -26,6 +26,12 @@ void Analog_Init(Analog_TypeDef *analog);
  */
 uint16_t Analog_Read(Analog_TypeDef *analog, uint32_t channel);
 
-//void DAC_Write(uint16_t value);  // Se necessário, implemente no main.c
+/**
+ * @brief Escreve um valor analógico no DAC.
+ * 
+ * @param analog Ponteiro para a estrutura Analog_TypeDef que representa o DAC.
+ * @param value Valor a ser escrito no DAC (de 0 a 4095, correspondendo a 0 a Vref).
+ */
+void Analog_Write(Analog_TypeDef *analog, uint16_t value);
 
 #endif /* ANALOG_H */
