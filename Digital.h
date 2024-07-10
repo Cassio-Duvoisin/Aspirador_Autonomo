@@ -1,7 +1,7 @@
 #ifndef DIGITAL_H
 #define DIGITAL_H
 
-#include "stm32f407xx.h"
+#include "stm32f4xx_hal.h"
 
 // Estrutura para encapsular o GPIO
 typedef struct {
