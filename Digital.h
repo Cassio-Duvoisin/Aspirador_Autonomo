@@ -1,5 +1,5 @@
 /**
- * @file digital.h
+ * @file Digital.h
  * @brief Funções para leitura e escrita de sinais digitais.
  */
 
