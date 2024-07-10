@@ -1,5 +1,5 @@
 /**
- * @file button.h
+ * @file Button.h
  * @brief Funções para leitura do botão.
  */
 
