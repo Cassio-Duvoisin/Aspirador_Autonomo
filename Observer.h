@@ -1,5 +1,5 @@
 /**
- * @file observer.h
+ * @file Observer.h
  * @brief Funções para gerenciamento de observadores (Observer Pattern).
  */
 
