@@ -6,5 +6,6 @@
 #include "Digital.h"
 #include "PWM.h"
 #include "LedMgr.h"
+#include "Button.h"
 
 #endif /* HARDWARE_PROXY_H */
