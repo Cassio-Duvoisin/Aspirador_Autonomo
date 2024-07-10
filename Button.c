@@ -1,9 +1,9 @@
 /**
- * @file button.c
+ * @file Button.c
  * @brief Implementação das funções de leitura do botão.
  */
 
-#include "button.h"
+#include "Button.h"
 
 void Button_Init(void) {
     __HAL_RCC_GPIOA_CLK_ENABLE();
