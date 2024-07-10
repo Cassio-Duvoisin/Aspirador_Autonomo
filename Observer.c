@@ -1,9 +1,9 @@
 /**
- * @file observer.c
+ * @file Observer.c
  * @brief Implementação das funções de gerenciamento de observadores.
  */
 
-#include "observer.h"
+#include "Observer.h"
 
 #define MAX_OBSERVERS 10
 
