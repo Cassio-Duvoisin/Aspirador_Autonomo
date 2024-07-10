@@ -3,7 +3,6 @@
  * @brief Função principal do programa.
  */
 
-#include "stm32f4xx_hal.h"
 #include "SystemConfig.h"
 #include "HardwareProxy.h"
 #include "Observer.h"
