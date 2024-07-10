@@ -1,5 +1,5 @@
 /**
- * @file analog.h
+ * @file Analog.h
  * @brief Funções para leitura de sinal analógico.
  */
 
