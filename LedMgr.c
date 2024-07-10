@@ -1,9 +1,9 @@
 /**
- * @file ledmgr.c
+ * @file LedMgr.c
  * @brief Implementação das funções de controle de LEDs.
  */
 
-#include "ledmgr.h"
+#include "LedMgr.h"
 
 void LED_Init(void) {
     __HAL_RCC_GPIOD_CLK_ENABLE();
