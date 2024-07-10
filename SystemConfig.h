@@ -1,5 +1,5 @@
 /**
- * @file systemconfig.h
+ * @file SystemConfig.h
  * @brief Configurações do sistema.
  */
 
