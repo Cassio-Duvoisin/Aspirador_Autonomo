@@ -1,7 +1,7 @@
 #ifndef ANALOG_H
 #define ANALOG_H
 
-#include "stm32f407xx.h"
+#include "stm32f4xx_hal.h"
 
 // Estrutura para encapsular o ADC
 typedef struct {
