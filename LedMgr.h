@@ -13,13 +13,18 @@
 #define LED_GREEN_PIN   GPIO_PIN_12
 #define LED_GREEN_PORT  GPIOD
 
-// Funções públicas
+//---------------------------Funções públicas---------------------------//
 
 /**
  * @brief Inicializa os LEDs.
  */
 void LED_Init(void);
 
-void LED_On(GPIO_PinState state, GPIO_PinState state1, GPIO_PinState state2, GPIO_PinState state3);
+/**
+ * @brief Seta o estado para os LEDs
+ * 
+ * @param GPIO_PinState estado desejado do LED
+ */
+void LED_On(GPIO_PinState led_red, GPIO_PinState led_orange, GPIO_PinState led_blue, GPIO_PinState led_green);
 
 #endif /* LEDMGR_H */
