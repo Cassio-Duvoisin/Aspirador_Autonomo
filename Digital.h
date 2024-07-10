@@ -9,7 +9,7 @@ typedef struct {
     uint16_t pin;
 } Digital_TypeDef;
 
-// Funções públicas
+//---------------------------Funções públicas---------------------------//
 
 /**
  * @brief Inicializa um pino digital como entrada.
