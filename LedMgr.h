@@ -1,5 +1,5 @@
 /**
- * @file ledmgr.h
+ * @file LedMgr.h
  * @brief Funções para controle de LEDs.
  */
 
