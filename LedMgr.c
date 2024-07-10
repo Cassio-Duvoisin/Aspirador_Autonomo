@@ -24,3 +24,9 @@ void LED_On(GPIO_PinState led_red, GPIO_PinState led_orange, GPIO_PinState led_b
     HAL_GPIO_WritePin(GPIOD, LED_BLUE_PIN, led_blue);
     HAL_GPIO_WritePin(GPIOD, LED_GREEN_PIN, led_green);
 }
+
+// Função para alternar o estado de um LED
+void LED_Toggle(uint16_t led_pin)
+{
+    HAL_GPIO_TogglePin(GPIOD, led_pin);
+}
