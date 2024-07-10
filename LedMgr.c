@@ -17,10 +17,10 @@ void LED_Init(void)
 }
 
 // Função para controlar os LEDs
-void LED_On(GPIO_PinState state, GPIO_PinState state1, GPIO_PinState state2, GPIO_PinState state3)
+void LED_On(GPIO_PinState led_red, GPIO_PinState led_orange, GPIO_PinState led_blue, GPIO_PinState led_green)
 {
-    HAL_GPIO_WritePin(GPIOD, LED_RED_PIN, state);
-    HAL_GPIO_WritePin(GPIOD, LED_ORANGE_PIN, state1);
-    HAL_GPIO_WritePin(GPIOD, LED_BLUE_PIN, state2);
-    HAL_GPIO_WritePin(GPIOD, LED_GREEN_PIN, state3);
+    HAL_GPIO_WritePin(GPIOD, LED_RED_PIN, led_red);
+    HAL_GPIO_WritePin(GPIOD, LED_ORANGE_PIN, led_orange);
+    HAL_GPIO_WritePin(GPIOD, LED_BLUE_PIN, led_blue);
+    HAL_GPIO_WritePin(GPIOD, LED_GREEN_PIN, led_green);
 }
