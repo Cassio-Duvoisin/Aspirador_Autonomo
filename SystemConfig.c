@@ -1,9 +1,9 @@
 /**
- * @file systemconfig.c
+ * @file SystemConfig.c
  * @brief Implementação das configurações do sistema.
  */
 
-#include "systemconfig.h"
+#include "SystemConfig.h"
 
 void SystemClock_Config(void) {
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
