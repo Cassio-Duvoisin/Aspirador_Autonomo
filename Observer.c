@@ -1,23 +1,23 @@
-#include "Observer.h"
+/**
+ * @file observer.c
+ * @brief Implementação das funções de gerenciamento de observadores.
+ */
 
-Observer_Watcher_Type Observer_Reached_Target(Analog_TypeDef* analogPin, Digital_TypeDef* digitalPin) {
-    
-    Observer_Watcher_Type TARGET = IDLE;
+#include "observer.h"
 
-    // verifica se o valor chegou no esperado
-    if (analogPin != NULL) {
-        if (Analog_Read(&analogPin, ADC_CHANNEL_0) >= 32768) { // uint16_t half value
-            return REACH_TARGET;
-        }
-    } 
-    else if (digitalPin != NULL) {
-        if (Digital_Read(&digitalPin) == 1) { // HIGH value
-            return REACH_TARGET;
-        }
-    } 
-    else {
-        printf("ERROR NO PIN CONFIGURED");
+#define MAX_OBSERVERS 10
+
+static ObserverCallback observers[MAX_OBSERVERS];
+static int observer_count = 0;
+
+void RegisterObserver(ObserverCallback callback) {
+    if (observer_count < MAX_OBSERVERS) {
+        observers[observer_count++] = callback;
     }
+}
 
-    return TARGET;    
+void NotifyObservers(void) {
+    for (int i = 0; i < observer_count; i++) {
+        observers[i]();
+    }
 }
