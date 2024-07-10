@@ -6,11 +6,11 @@
 #ifndef HARDWAREPROXY_H
 #define HARDWAREPROXY_H
 
-#include "analog.h"
-#include "digital.h"
-#include "ledmgr.h"
-#include "pwm.h"
-#include "button.h"
+#include "Analog.h"
+#include "Digital.h"
+#include "LedMgr.h"
+#include "PWM.h"
+#include "Button.h"
 
 /**
  * @brief Inicializa todos os componentes de hardware.
