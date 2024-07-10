@@ -1,5 +1,5 @@
 /**
- * @file pwm.h
+ * @file PWM.h
  * @brief Funções para controle de PWM.
  */
 
