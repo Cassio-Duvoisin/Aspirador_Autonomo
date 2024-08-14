@@ -1,3 +1,0 @@
-../Core/Src/LedMgr.c:4:6:LED_Init	32	static
-../Core/Src/LedMgr.c:20:6:LED_On	24	static
-../Core/Src/LedMgr.c:29:6:LED_Toggle	16	static

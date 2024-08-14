@@ -1,5 +1,0 @@
-../Core/Src/Digital.c:4:6:Digital_InitInput	1
-../Core/Src/Digital.c:17:6:Digital_InitOutput	1
-../Core/Src/Digital.c:33:15:Digital_Read	1
-../Core/Src/Digital.c:39:6:Digital_Write	1
-../Core/Src/Digital.c:45:6:Digital_EnableInterrupt	1
