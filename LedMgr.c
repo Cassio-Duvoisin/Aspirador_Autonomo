@@ -1,32 +1,29 @@
+/**
+ * @file LedMgr.c
+ * @brief Implementação das funções de controle de LEDs.
+ */
+
 #include "LedMgr.h"
 
-// Função para inicializar os LEDs
-void LED_Init(void)
-{
-    GPIO_InitTypeDef GPIO_InitStruct;
-
-    // Inicialização do Clock do Port D
+void LED_Init(void) {
     __HAL_RCC_GPIOD_CLK_ENABLE();
 
-    // Configuração dos pinos dos LEDs como saída
-    GPIO_InitStruct.Pin = LED_RED_PIN | LED_ORANGE_PIN | LED_BLUE_PIN | LED_GREEN_PIN;
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = GPIO_PIN_12 | GPIO_PIN_13 | GPIO_PIN_14 | GPIO_PIN_15;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 }
 
-// Função para controlar os LEDs
-void LED_On(GPIO_PinState led_red, GPIO_PinState led_orange, GPIO_PinState led_blue, GPIO_PinState led_green)
-{
-    HAL_GPIO_WritePin(GPIOD, LED_RED_PIN, led_red);
-    HAL_GPIO_WritePin(GPIOD, LED_ORANGE_PIN, led_orange);
-    HAL_GPIO_WritePin(GPIOD, LED_BLUE_PIN, led_blue);
-    HAL_GPIO_WritePin(GPIOD, LED_GREEN_PIN, led_green);
+void LED_On(uint16_t GPIO_Pin) {
+    HAL_GPIO_WritePin(GPIOD, GPIO_Pin, GPIO_PIN_SET);
 }
 
-// Função para alternar o estado de um LED
-void LED_Toggle(uint16_t led_pin)
-{
-    HAL_GPIO_TogglePin(GPIOD, led_pin);
+void LED_Off(uint16_t GPIO_Pin) {
+    HAL_GPIO_WritePin(GPIOD, GPIO_Pin, GPIO_PIN_RESET);
+}
+
+void LED_Toggle(uint16_t GPIO_Pin) {
+    HAL_GPIO_TogglePin(GPIOD, GPIO_Pin);
 }

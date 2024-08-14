@@ -1,29 +1,22 @@
+/**
+ * @file Analog.h
+ * @brief Funções para leitura de sinal analógico.
+ */
+
 #ifndef ANALOG_H
 #define ANALOG_H
 
 #include "stm32f4xx_hal.h"
 
-// Estrutura para encapsular o ADC
-typedef struct {
-    ADC_HandleTypeDef hadc;  // Estrutura do ADC
-} Analog_TypeDef;
-
-//---------------------------Funções públicas---------------------------//
+/**
+ * @brief Inicializa o ADC para leitura analógica.
+ */
+void Analog_Init(void);
 
 /**
- * @brief Inicializa o ADC.
- * 
- * @param analog Ponteiro para a estrutura Analog_TypeDef que representa o ADC.
+ * @brief Lê o valor analógico do ADC.
+ * @return O valor lido do ADC.
  */
-void Analog_Init(Analog_TypeDef *analog);
+uint32_t Analog_Read(void);
 
-/**
- * @brief Realiza a leitura de um canal específico do ADC.
- * 
- * @param analog Ponteiro para a estrutura Analog_TypeDef que representa o ADC.
- * @param channel Canal do ADC a ser lido.
- * @return Valor lido do canal especificado.
- */
-uint16_t Analog_Read(Analog_TypeDef *analog, uint32_t channel);
-
-#endif /* ANALOG_H */
+#endif

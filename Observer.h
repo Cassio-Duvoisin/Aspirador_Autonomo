@@ -1,17 +1,25 @@
+/**
+ * @file Observer.h
+ * @brief Funções para gerenciamento de observadores (Observer Pattern).
+ */
+
 #ifndef OBSERVER_H
 #define OBSERVER_H
 
-#include <stdio.h>
-#include <stdbool.h>
-#include "Analog.h"
-#include "Digital.h"
+/**
+ * @brief Tipo de callback para observadores.
+ */
+typedef void (*ObserverCallback)(void);
 
-// Estrutura para Observer_Watcher_Type
-typedef enum {
-    IDLE = 0,
-    REACH_TARGET = 1
-}Observer_Watcher_Type;
+/**
+ * @brief Registra um observador.
+ * @param callback Função de callback do observador.
+ */
+void RegisterObserver(ObserverCallback callback);
 
-Observer_Watcher_Type Observer_Reached_Target(Analog_TypeDef* analogPin, Digital_TypeDef* digitalPin);
+/**
+ * @brief Notifica todos os observadores registrados.
+ */
+void NotifyObservers(void);
 
-#endif /* ANALOG_H */
+#endif
