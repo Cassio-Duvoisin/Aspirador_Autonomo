@@ -2,7 +2,7 @@
 #define INTERRUPT_HANDLERS_H
 
 #include "stm32f4xx_hal.h"
-#include "Hardware_Proxy.h"
+#include "SystemConfig.h"
 
 /**
  * @brief Manipulador de interrupção para o botão de emergência.
@@ -13,6 +13,6 @@
  * O sistema permanece em um loop infinito, mantendo tudo desativado enquanto o botão
  * continua pressionado, garantindo que não haja reativação inadvertida do sistema.
  */
-void EmergencyButton_IRQHandler(void);
+void EmergencyButton_IRQHandler(Blackboard* board);
 
 #endif // INTERRUPT_HANDLERS_H
