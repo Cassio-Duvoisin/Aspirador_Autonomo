@@ -1,65 +1,134 @@
-/**
- * @file main.c
- * @brief Função principal do programa.
- */
+#include "Hardware_Proxy.h"
 
-#include "SystemConfig.h"
-#include "HardwareProxy.h"
-#include "Observer.h"
 
-/**
- * @brief Callback para notificação de 50% do PWM.
- */
-void PWM_50PercentCallback(void);
+// Variáveis para ADC, GPIO e PWM
+typedef struct{
+    Analog_TypeDef analog;
+    Digital_TypeDef digital_in;
+    Digital_TypeDef digital_out;
+    PWM_TypeDef pwm;
+}Input_Output_Parameters;
 
-int main(void) {
-    HAL_Init();  // Inicializa o HAL
-    SystemClock_Config();  // Configura o clock do sistema
-    HardwareProxy_Init();  // Inicializa todos os componentes de hardware
+typedef struct {
+    Input_Output_Parameters Parameters;
+    GPIO_PinState current_button_state;
+    GPIO_PinState button_state;
+    GPIO_PinState digital_state;
+    GPIO_InitTypeDef GPIO_InitStruct;
+    uint16_t adc_value;
+}Blackboard;
 
-    RegisterObserver(PWM_50PercentCallback);  // Registra o callback para PWM
+static Blackboard blackboard;  
 
-    uint32_t analogValue = 0;
-    GPIO_PinState digitalState;
-    uint32_t pwmValue = 0;  // Valor inicial do PWM
+// Variável para o Watchdog Timer
+static IWDG_HandleTypeDef hiwdg;
 
-    while (1) {
-        // Incrementa o valor do PWM a cada 1%
-        pwmValue = (pwmValue + 100) % 10000;  // Incrementa 1% e reinicia após 100%
-        HardwareProxy_SetPWM(pwmValue);  // Define o PWM
+int main(void)
+{
+    HAL_Init();  			                            // Inicialização do HAL
+    SystemConfig_Init();  	                            // Configuração do clock do sistema
 
-        // Adiciona um pequeno delay
-        HAL_Delay(10);  // Delay de 10 ms
+    // Inicialização do IWDG (Watchdog Timer)
+    hiwdg.Instance = IWDG;
+    hiwdg.Init.Prescaler = IWDG_PRESCALER_64;
+    hiwdg.Init.Reload = 1250;  // Timeout de 1 segundo aproximadamente (32kHz / 64 / 1250)
+    if (HAL_IWDG_Init(&hiwdg) != HAL_OK) {
+        // Initialization Error
+        Error_Handler();
+    }
 
-        // Leitura do valor analógico
-        analogValue = HardwareProxy_ReadAnalog();
-        // Leitura do estado do pino digital
-        digitalState = HardwareProxy_ReadDigital(GPIOD, GPIO_PIN_0);
+    // Inicialização do Blackboard
+    Assemble_BlackBoard(&blackboard);
 
-        // Verifica se o botão foi pressionado para alternar o LED
-        if (HardwareProxy_ReadButton() == GPIO_PIN_SET) {
-            HardwareProxy_ToggleLED(GPIO_PIN_12);  // Alterna o estado do LED verde
-        }
+    // Inicialização dos LEDs
+    LED_Init();
+    while (1)
+    {
+        // Alimenta o Watchdog Timer
+        HAL_IWDG_Refresh(&hiwdg);
 
-        // Controla o estado dos LEDs azul e verde com base no estado do pino digital
-        if (digitalState == GPIO_PIN_SET) {
-            HardwareProxy_SetLED(GPIO_PIN_13, GPIO_PIN_SET);  // Liga o LED azul
-        } else {
-            HardwareProxy_SetLED(GPIO_PIN_13, GPIO_PIN_RESET);  // Desliga o LED azul
-        }
+        // Leitura do estado atual do botão
+        blackboard.current_button_state = Digital_Read(&blackboard.Parameters.digital_in);
 
-        // Notifica observadores se o PWM estiver em 50%
-        if (pwmValue >= 5000 && pwmValue < 5100) {
-            NotifyObservers();  // Notifica todos os observadores registrados
-        }
+        
+        // Exemplo de leitura de pino digital
+        blackboard.digital_state = Digital_Read(&blackboard.Parameters.digital_in);
+        
+        blackboard.adc_value = Analog_Read(&blackboard.Parameters.analog, ADC_CHANNEL_0);
+        
+        //Roda a rotina padrão
+        Run_Routine(&blackboard);
+        
+        // Atualiza o estado anterior do botão
+        blackboard.button_state = blackboard.current_button_state;
+        
     }
 }
 
-/**
- * @brief Callback para quando o PWM atinge 50%.
- *
- * Alterna o estado do LED vermelho.
- */
-void PWM_50PercentCallback(void) {
-    HardwareProxy_ToggleLED(GPIO_PIN_14);  // Alterna o estado do LED vermelho
+void Error_Handler(void) {
+    // Função de tratamento de erro
+    // Pode incluir códigos de diagnóstico, como acender LEDs ou enviar mensagens de depuração
+    while(1) {
+        // Loop infinito para indicar erro
+    }
+}
+
+void Assemble_BlackBoard(Blackboard* board) {
+    
+    // Configuração do pino de emergência como entrada com interrupção
+    __HAL_RCC_GPIOC_CLK_ENABLE();
+    board->GPIO_InitStruct = {0};
+    board->GPIO_InitStruct.Pin = EMERGENCY_BUTTON_PIN;
+    board->GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+    board->GPIO_InitStruct.Pull = GPIO_NOPULL;
+    HAL_GPIO_Init(EMERGENCY_BUTTON_PORT, &board->GPIO_InitStruct);
+
+    // Configuração do NVIC para a interrupção do botão de emergência
+    HAL_NVIC_SetPriority(EMERGENCY_BUTTON_IRQn, 2, 0);
+    HAL_NVIC_EnableIRQ(EMERGENCY_BUTTON_IRQn);
+
+    // Inicialização do ADC
+    Analog_Init(&board->Parameters.analog);
+
+    // Inicialização do pino digital como entrada
+    board->Parameters.digital_in.port = GPIOA;  		            // Exemplo: Porta A
+    board->Parameters.digital_in.pin = GPIO_PIN_0;  	            // Exemplo: Pino 0
+    Digital_InitInput(&board->Parameters.digital_in);
+
+    // Inicialização do pino digital como saída
+    board->Parameters.digital_out.port = GPIOB;  		        // Exemplo: Porta B
+    board->Parameters.digital_out.pin = GPIO_PIN_5;  	        // Exemplo: Pino 5
+    Digital_InitOutput(&board->Parameters.digital_out, GPIO_PIN_RESET);   // Estado inicial: Baixo
+
+    // Inicialização do PWM
+    board->Parameters.pwm.channel = TIM_CHANNEL_1;               // Canal 1 do TIM2
+    PWM_Init(&board->Parameters.pwm, 1000);                      // Frequência do PWM: 1000 Hz
+
+    // Variável para armazenar o estado anterior do botão
+    board->button_state = GPIO_PIN_RESET;
+}
+
+void Run_Routine(Blackboard* board){
+        // Exemplo de controle dos LEDs
+        LED_On(GPIO_PIN_SET, GPIO_PIN_RESET, GPIO_PIN_SET, GPIO_PIN_RESET);  // Ativa LED Vermelho e Azul, Desativa LED Laranja e Verde
+
+        // Verifica se houve uma transição de estado (botão pressionado)
+        if (board->current_button_state == GPIO_PIN_SET && button_state == GPIO_PIN_RESET) {
+            // Inverte o estado dos LEDs
+            LED_Toggle(GPIO_PIN_0);
+            LED_Toggle(GPIO_PIN_1);
+            LED_Toggle(GPIO_PIN_2);
+            LED_Toggle(GPIO_PIN_3);
+        }
+
+        // Exemplo de escrita em pino digital
+        Digital_Write(&board->Parameters.digital_out, GPIO_PIN_SET);      // Define o pino para Alto
+
+        // Exemplo de controle do PWM (varia de 0% a 100% do ciclo de trabalho)
+        for (float duty = 0.1; duty <= 1.0; duty += 0.1) {
+            PWM_SetDutyCycle(&board->Parameters., duty);
+            HAL_Delay(500);  // Delay de 500 ms
+        }
+
+        PWM_Stop(&board->Parameters.);  // Para o PWM
 }
