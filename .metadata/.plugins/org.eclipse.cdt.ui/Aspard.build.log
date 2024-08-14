@@ -1,0 +1,116 @@
+11:25:51 **** Incremental Build of configuration Debug for project Aspard ****
+make -j20 all 
+arm-none-eabi-gcc "../Core/Src/Analog.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F407xx -c -I../USB_HOST/App -I../USB_HOST/Target -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/Analog.d" -MT"Core/Src/Analog.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/Analog.o"
+arm-none-eabi-gcc "../Core/Src/Observer.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F407xx -c -I../USB_HOST/App -I../USB_HOST/Target -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/Observer.d" -MT"Core/Src/Observer.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/Observer.o"
+arm-none-eabi-gcc "../Core/Src/PWM.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F407xx -c -I../USB_HOST/App -I../USB_HOST/Target -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Middlewares/ST/STM32_USB_Host_Library/Core/Inc -I../Middlewares/ST/STM32_USB_Host_Library/Class/CDC/Inc -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/PWM.d" -MT"Core/Src/PWM.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/PWM.o"
+In file included from ../Core/Src/Analog.c:1:
+../Core/Inc/Analog.h:5:10: fatal error: stm32f4xx_hal_adc.h: No such file or directory
+    5 | #include "stm32f4xx_hal_adc.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+In file included from ../Core/Src/PWM.c:1:
+../Core/Inc/PWM.h:8:5: error: unknown type name 'TIM_HandleTypeDef'
+    8 |     TIM_HandleTypeDef htim;  // Estrutura do timer para o PWM
+      |     ^~~~~~~~~~~~~~~~~
+make: *** [Core/Src/subdir.mk:55: Core/Src/Analog.o] Error 1
+make: *** Waiting for unfinished jobs....
+In file included from ../Core/Inc/Observer.h:6,
+                 from ../Core/Src/Observer.c:1:
+../Core/Inc/Analog.h:5:10: fatal error: stm32f4xx_hal_adc.h: No such file or directory
+    5 | #include "stm32f4xx_hal_adc.h"
+      |          ^~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+../Core/Src/PWM.c: In function 'PWM_Init':
+../Core/Src/PWM.c:7:5: error: unknown type name 'TIM_MasterConfigTypeDef'
+    7 |     TIM_MasterConfigTypeDef sMasterConfig;
+      |     ^~~~~~~~~~~~~~~~~~~~~~~
+make: *** [Core/Src/subdir.mk:55: Core/Src/Observer.o] Error 1
+../Core/Src/PWM.c:8:5: error: unknown type name 'TIM_OC_InitTypeDef'; did you mean 'I2C_InitTypeDef'?
+    8 |     TIM_OC_InitTypeDef sConfigOC;
+      |     ^~~~~~~~~~~~~~~~~~
+      |     I2C_InitTypeDef
+../Core/Src/PWM.c:10:14: error: request for member 'Instance' in something not a structure or union
+   10 |     pwm->htim.Instance = TIM2;  // Exemplo: TIM2
+      |              ^
+../Core/Src/PWM.c:11:14: error: request for member 'Init' in something not a structure or union
+   11 |     pwm->htim.Init.Prescaler = (HAL_RCC_GetPCLK1Freq() / 1000000) - 1;  // Prescaler para microsegundos
+      |              ^
+../Core/Src/PWM.c:12:14: error: request for member 'Init' in something not a structure or union
+   12 |     pwm->htim.Init.CounterMode = TIM_COUNTERMODE_UP;
+      |              ^
+../Core/Src/PWM.c:12:34: error: 'TIM_COUNTERMODE_UP' undeclared (first use in this function)
+   12 |     pwm->htim.Init.CounterMode = TIM_COUNTERMODE_UP;
+      |                                  ^~~~~~~~~~~~~~~~~~
+../Core/Src/PWM.c:12:34: note: each undeclared identifier is reported only once for each function it appears in
+../Core/Src/PWM.c:13:14: error: request for member 'Init' in something not a structure or union
+   13 |     pwm->htim.Init.Period = 1000000 / frequency - 1;  // Frequência desejada em Hz
+      |              ^
+../Core/Src/PWM.c:14:14: error: request for member 'Init' in something not a structure or union
+   14 |     pwm->htim.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+      |              ^
+../Core/Src/PWM.c:14:36: error: 'TIM_CLOCKDIVISION_DIV1' undeclared (first use in this function)
+   14 |     pwm->htim.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+      |                                    ^~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/PWM.c:15:5: warning: implicit declaration of function 'HAL_TIM_PWM_Init' [-Wimplicit-function-declaration]
+   15 |     HAL_TIM_PWM_Init(&(pwm->htim));
+      |     ^~~~~~~~~~~~~~~~
+../Core/Src/PWM.c:18:14: error: request for member 'OCMode' in something not a structure or union
+   18 |     sConfigOC.OCMode = TIM_OCMODE_PWM1;
+      |              ^
+../Core/Src/PWM.c:18:24: error: 'TIM_OCMODE_PWM1' undeclared (first use in this function)
+   18 |     sConfigOC.OCMode = TIM_OCMODE_PWM1;
+      |                        ^~~~~~~~~~~~~~~
+../Core/Src/PWM.c:19:14: error: request for member 'Pulse' in something not a structure or union
+   19 |     sConfigOC.Pulse = 0;
+      |              ^
+../Core/Src/PWM.c:20:14: error: request for member 'OCPolarity' in something not a structure or union
+   20 |     sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+      |              ^
+../Core/Src/PWM.c:20:28: error: 'TIM_OCPOLARITY_HIGH' undeclared (first use in this function); did you mean 'SPI_POLARITY_HIGH'?
+   20 |     sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+      |                            ^~~~~~~~~~~~~~~~~~~
+      |                            SPI_POLARITY_HIGH
+../Core/Src/PWM.c:21:14: error: request for member 'OCFastMode' in something not a structure or union
+   21 |     sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+      |              ^
+../Core/Src/PWM.c:21:28: error: 'TIM_OCFAST_DISABLE' undeclared (first use in this function)
+   21 |     sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+      |                            ^~~~~~~~~~~~~~~~~~
+../Core/Src/PWM.c:22:5: warning: implicit declaration of function 'HAL_TIM_PWM_ConfigChannel' [-Wimplicit-function-declaration]
+   22 |     HAL_TIM_PWM_ConfigChannel(&(pwm->htim), &sConfigOC, pwm->channel);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/PWM.c:24:18: error: request for member 'MasterOutputTrigger' in something not a structure or union
+   24 |     sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+      |                  ^
+../Core/Src/PWM.c:24:41: error: 'TIM_TRGO_RESET' undeclared (first use in this function)
+   24 |     sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+      |                                         ^~~~~~~~~~~~~~
+../Core/Src/PWM.c:25:18: error: request for member 'MasterSlaveMode' in something not a structure or union
+   25 |     sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+      |                  ^
+../Core/Src/PWM.c:25:37: error: 'TIM_MASTERSLAVEMODE_DISABLE' undeclared (first use in this function)
+   25 |     sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/PWM.c:26:5: warning: implicit declaration of function 'HAL_TIMEx_MasterConfigSynchronization'; did you mean 'HAL_TIM_SlaveConfigSynchronization'? [-Wimplicit-function-declaration]
+   26 |     HAL_TIMEx_MasterConfigSynchronization(&(pwm->htim), &sMasterConfig);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |     HAL_TIM_SlaveConfigSynchronization
+../Core/Src/PWM.c: In function 'PWM_SetDutyCycle':
+../Core/Src/PWM.c:32:32: error: request for member 'Init' in something not a structure or union
+   32 |     uint32_t pulse = (pwm->htim.Init.Period + 1) * duty_cycle;
+      |                                ^
+../Core/Src/PWM.c:33:5: warning: implicit declaration of function 'HAL_TIM_PWM_Stop' [-Wimplicit-function-declaration]
+   33 |     HAL_TIM_PWM_Stop(&(pwm->htim), pwm->channel);
+      |     ^~~~~~~~~~~~~~~~
+../Core/Src/PWM.c:34:5: warning: implicit declaration of function '__HAL_TIM_SET_COMPARE' [-Wimplicit-function-declaration]
+   34 |     __HAL_TIM_SET_COMPARE(&(pwm->htim), pwm->channel, pulse);
+      |     ^~~~~~~~~~~~~~~~~~~~~
+../Core/Src/PWM.c:35:5: warning: implicit declaration of function 'HAL_TIM_PWM_Start'; did you mean 'HAL_DMA_Start'? [-Wimplicit-function-declaration]
+   35 |     HAL_TIM_PWM_Start(&(pwm->htim), pwm->channel);
+      |     ^~~~~~~~~~~~~~~~~
+      |     HAL_DMA_Start
+make: *** [Core/Src/subdir.mk:55: Core/Src/PWM.o] Error 1
+"make -j20 all" terminated with exit code 2. Build might be incomplete.
+
+11:25:52 Build Failed. 28 errors, 6 warnings. (took 562ms)
+

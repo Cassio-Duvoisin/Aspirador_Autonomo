@@ -1,0 +1,67 @@
+!SESSION 2024-07-09 15:43:19.044 -----------------------------------------------
+eclipse.buildId=Version 1.14.1
+java.version=17.0.8.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2024-07-09 15:43:44.260
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2024-07-09 15:43:44.273
+!MESSAGE Log4j2 initialized with config file C:\CODES\Aspirador_Autonomo\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2024-07-09 15:43:46.643
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2024-07-09 15:48:10.323
+!MESSAGE Indexed 'Aspard' (36 sources, 100 headers) in 3.42 sec: 7,847 declarations; 50,063 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0035%)
+!SESSION 2024-07-10 11:02:29.577 -----------------------------------------------
+eclipse.buildId=Version 1.14.1
+java.version=17.0.8.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2024-07-10 11:03:00.069
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2024-07-10 11:03:00.075
+!MESSAGE Log4j2 initialized with config file C:\CODES\Aspirador_Autonomo\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2024-07-10 11:03:13.004
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2024-07-10 11:07:13.887 -----------------------------------------------
+eclipse.buildId=Version 1.14.1
+java.version=17.0.8.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2024-07-10 11:07:19.143
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2024-07-10 11:07:19.144
+!MESSAGE Log4j2 initialized with config file C:\CODES\Aspirador_Autonomo\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2024-07-10 11:07:27.716
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2024-07-10 11:19:58.760 -----------------------------------------------
+eclipse.buildId=Version 1.14.1
+java.version=17.0.8.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=pt_BR
+Framework arguments:  C:\CODES\Aspirador_Autonomo\Aspard\.project
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 C:\CODES\Aspirador_Autonomo\Aspard\.project
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2024-07-10 11:20:05.153
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2024-07-10 11:20:05.154
+!MESSAGE Log4j2 initialized with config file C:\CODES\Aspirador_Autonomo\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2024-07-10 11:20:15.251
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2024-07-10 11:20:18.336
+!MESSAGE Indexed 'Aspard' (43 sources, 111 headers) in 2.76 sec: 8,127 declarations; 50,826 references; 0 unresolved inclusions; 1 syntax errors; 57 unresolved names (0.097%)
