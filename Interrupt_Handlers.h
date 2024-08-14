@@ -2,7 +2,7 @@
 #define INTERRUPT_HANDLERS_H
 
 #include "stm32f4xx_hal.h"
-#include "Hardware_Proxy.h"
+#include "HardwareProxy.h"
 
 /**
  * @brief Manipulador de interrupção para o botão de emergência.
