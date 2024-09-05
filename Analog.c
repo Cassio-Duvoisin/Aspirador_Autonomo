@@ -5,31 +5,37 @@
 
 #include "Analog.h"
 
-ADC_HandleTypeDef hadc1;
+void Analog_Init(ADC_HandleTypeDef* hadc, uint32_t channel) {
+    // Habilita o clock para o ADC
+    if (hadc->Instance == ADC1) {
+        __HAL_RCC_ADC1_CLK_ENABLE();
+    } else if (hadc->Instance == ADC2) {
+        __HAL_RCC_ADC2_CLK_ENABLE();
+    } else if (hadc->Instance == ADC3) {
+        __HAL_RCC_ADC3_CLK_ENABLE();
+    }
+    
+    // Configura o ADC
+    hadc->Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+    hadc->Init.Resolution = ADC_RESOLUTION_12B;
+    hadc->Init.ScanConvMode = DISABLE;
+    hadc->Init.ContinuousConvMode = DISABLE;
+    hadc->Init.DiscontinuousConvMode = DISABLE;
+    hadc->Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+    hadc->Init.DataAlign = ADC_DATAALIGN_RIGHT;
+    hadc->Init.NbrOfConversion = 1;
+    HAL_ADC_Init(hadc);
 
-void Analog_Init(void) {
-    __HAL_RCC_ADC1_CLK_ENABLE();
-
-    hadc1.Instance = ADC1;
-    hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
-    hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-    hadc1.Init.ScanConvMode = DISABLE;
-    hadc1.Init.ContinuousConvMode = DISABLE;
-    hadc1.Init.DiscontinuousConvMode = DISABLE;
-    hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
-    hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-    hadc1.Init.NbrOfConversion = 1;
-    HAL_ADC_Init(&hadc1);
-
+    // Configura o canal do ADC
     ADC_ChannelConfTypeDef sConfig = {0};
-    sConfig.Channel = ADC_CHANNEL_0;
+    sConfig.Channel = channel;
     sConfig.Rank = 1;
     sConfig.SamplingTime = ADC_SAMPLETIME_3CYCLES;
-    HAL_ADC_ConfigChannel(&hadc1, &sConfig);
+    HAL_ADC_ConfigChannel(hadc, &sConfig);
 }
 
-uint32_t Analog_Read(void) {
-    HAL_ADC_Start(&hadc1);
-    HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-    return HAL_ADC_GetValue(&hadc1);
+uint32_t Analog_Read(ADC_HandleTypeDef* hadc) {
+    HAL_ADC_Start(&hadc);
+    HAL_ADC_PollForConversion(&hadc, HAL_MAX_DELAY);
+    return HAL_ADC_GetValue(&hadc);
 }
