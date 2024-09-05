@@ -11,12 +11,12 @@
 /**
  * @brief Inicializa o ADC para leitura analógica.
  */
-void Analog_Init(void);
+void Analog_Init(ADC_HandleTypeDef* hadc, uint32_t channel);
 
 /**
  * @brief Lê o valor analógico do ADC.
  * @return O valor lido do ADC.
  */
-uint32_t Analog_Read(void);
+uint32_t Analog_Read(ADC_HandleTypeDef* hadc);
 
 #endif
