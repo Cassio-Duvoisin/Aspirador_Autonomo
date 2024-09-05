@@ -1,5 +1,5 @@
 #include "Interrupt_Handlers.h"
-
+#include "HardwareProxy.h"
 
 // Definição do pino de emergência
 #define EMERGENCY_BUTTON_PORT GPIOC

@@ -12,10 +12,32 @@
 #include "PWM.h"
 #include "Button.h"
 
+// Estruturas de Abstração de Periféricos
+typedef struct Pin{
+
+}Pin_Type;
+typedef struct Blackboard{
+    ADC_HandleTypeDef battery_pin;
+    ADC_HandleTypeDef distance_pin;
+
+    uint32_t adc_value;
+    uint32_t adc_value_2;
+    uint32_t adc_value_3;           // Usando para verificar a porcentagem da bateria
+    uint32_t pwmValue;
+    GPIO_PinState button_state;
+    GPIO_PinState digital_state_1;
+    GPIO_PinState digital_state_2;  //
+
+}Blackboard_Type;
+
+#define MAX_PROXIMITY_SENSOR_DISTANCE   2
+
+#define MOTOR_TURNING_DISTACE           2
+
 /**
  * @brief Inicializa todos os componentes de hardware.
  */
-void HardwareProxy_Init(void);
+void HardwareProxy_Init(Blackboard_Type* board);
 
 /**
  * @brief Lê o valor analógico.
@@ -43,7 +65,7 @@ void HardwareProxy_WriteDigital(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_Pin
  * @brief Define o ciclo de trabalho do PWM.
  * @param dutyCycle Ciclo de trabalho do PWM (0-100%).
  */
-void HardwareProxy_SetPWM(uint32_t dutyCycle);
+void HardwareProxy_SetPWM(uint32_t dutyCycle,TIM_HandleTypeDef* tim, uint32_t Timer);
 
 /**
  * @brief Lê o estado do botão.

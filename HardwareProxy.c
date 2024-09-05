@@ -5,16 +5,21 @@
 
 #include "HardwareProxy.h"
 
-void HardwareProxy_Init(void) {
-    Analog_Init();
+void HardwareProxy_Init(Blackboard_Type* board) {
+    
+    board.battery_pin->Instance = ADC1;
+    board.distance_pin->Instance = ADC2;
+    
+    Analog_Init(&board.battery_pin);
+    Analog_Init(&board.distance_pin);
+    
     Digital_Init();
     LED_Init();
-    PWM_Init();
     Button_Init();
 }
 
-uint32_t HardwareProxy_ReadAnalog(void) {
-    return Analog_Read();
+uint32_t HardwareProxy_ReadAnalog(ADC_HandleTypeDef* hadc) {
+    return Analog_Read(&hadc);
 }
 
 GPIO_PinState HardwareProxy_ReadDigital(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin) {
@@ -25,8 +30,8 @@ void HardwareProxy_WriteDigital(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, GPIO_Pin
     Digital_Write(GPIOx, GPIO_Pin, PinState);
 }
 
-void HardwareProxy_SetPWM(uint32_t dutyCycle) {
-    PWM_SetDutyCycle(dutyCycle);
+void HardwareProxy_SetPWM(uint32_t dutyCycle,TIM_HandleTypeDef* tim, uint32_t Timer) {
+    PWM_SetDutyCycle(dutyCycle, tim, Timer);
 }
 
 GPIO_PinState HardwareProxy_ReadButton(void) {

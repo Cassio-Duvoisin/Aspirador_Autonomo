@@ -3,7 +3,6 @@
 
 #include "stm32f4xx_hal.h"
 #include "SystemConfig.h"
-#include "HardwareProxy.h"
 
 /**
  * @brief Manipulador de interrupção para o botão de emergência.
