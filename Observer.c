@@ -4,6 +4,7 @@
  */
 
 #include "Observer.h"
+#include "ButtonDriver.h"
 
 #define MAX_OBSERVERS 10
 
